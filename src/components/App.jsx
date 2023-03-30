@@ -15,6 +15,13 @@ export class App extends Component {
     filter: '',
   };
 
+  static getDerivedStateFromProps(newProps,curState){
+    // console.log("getDerived, state: ",curState)
+    // console.log("getDerived, newProps: ",newProps)
+    // console.log("sorage", localStorage.getItem("contacts")) 
+    return curState;
+  }
+
   addUser = ({ name, number }) => {
     // console.log(name, number);
     if (this.state.contacts.find(el => el.name === name)) {
@@ -40,6 +47,29 @@ export class App extends Component {
   removeUser = id => {
     this.setState({ contacts: this.state.contacts.filter(el => el.id !== id) });
   };
+
+  
+
+  componentDidMount(){
+    if(localStorage.getItem("contacts")){
+      // console.log("local>>state")
+    this.setState({contacts: JSON.parse(localStorage.getItem("contacts"))});
+    }
+    else localStorage.setItem("contacts",JSON.stringify(this.state.contacts))
+
+  }
+
+  componentDidUpdate(prevProps,prevState){
+    if(prevState.contacts!==this.state.contacts){
+      // console.log("did upd state>>local")
+      localStorage.setItem("contacts",JSON.stringify(this.state.contacts))
+    }
+  }
+
+  componentWillUnmount(){
+    console.log('unmount')
+    if(this.state.contacts===[]) localStorage.removeItem("contacts")
+  }
 
   render() {
     return (
