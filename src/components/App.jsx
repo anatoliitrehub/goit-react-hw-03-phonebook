@@ -61,14 +61,16 @@ export class App extends Component {
 
   componentDidUpdate(prevProps,prevState){
     if(prevState.contacts!==this.state.contacts){
-      // console.log("did upd state>>local")
+      // console.log("did upd state>>local");
       localStorage.setItem("contacts",JSON.stringify(this.state.contacts))
     }
   }
 
   componentWillUnmount(){
-    console.log('unmount')
-    if(this.state.contacts===[]) localStorage.removeItem("contacts")
+    setInterval(()=>{
+    // console.log('unmount')
+    if(this.state.contacts.length===0) localStorage.removeItem("contacts")
+  },1000)
   }
 
   render() {
